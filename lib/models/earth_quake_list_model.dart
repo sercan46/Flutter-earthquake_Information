@@ -7,7 +7,7 @@ class EarthQuakeListModel {
   List<num>? coordinates;
   String? title;
   String? rev;
-  num? timestamp;
+  String? timestamp;
   String? dateStamp;
   String? date;
   String? hash;
