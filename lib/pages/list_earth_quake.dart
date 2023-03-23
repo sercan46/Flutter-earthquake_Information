@@ -12,7 +12,7 @@ class EarthQuakeList extends StatefulWidget {
 
 class _EarthQuakeListState extends State<EarthQuakeList> {
   final EarthQuakeListService _earthQuakeListService = EarthQuakeListService();
-  List<EarthQuakeListModel> _earthQuakeList = [];
+  List<Result>? _earthQuakeList = [];
 
   @override
   void initState() {
@@ -32,9 +32,9 @@ class _EarthQuakeListState extends State<EarthQuakeList> {
         title: const Text('Son Depremler'),
         centerTitle: true,
       ),
-      body: _earthQuakeList.isNotEmpty
+      body: _earthQuakeList!.isNotEmpty
           ? ListView.builder(
-              itemCount: _earthQuakeList.length,
+              itemCount: _earthQuakeList!.length,
               itemBuilder: (BuildContext context, index) {
                 return Center(
                   child: Padding(
@@ -58,26 +58,26 @@ class _EarthQuakeListState extends State<EarthQuakeList> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    EarthQuakeDetail(_earthQuakeList[index])),
+                                    EarthQuakeDetail(_earthQuakeList![index])),
                           );
                         },
                         child: ListTile(
                           leading: Icon(
                             Icons.warning,
                             size: 40,
-                            color: _earthQuakeList[index].mag! > 2.0
+                            color: _earthQuakeList![index].mag! > 2.0
                                 ? Colors.red
                                 : Colors.green,
                           ),
                           title: Text(
-                            'Merkez Üssü: ${_earthQuakeList[index].lokasyon}',
+                            'Merkez Üssü: ${_earthQuakeList![index].title}',
                             style: const TextStyle(
                                 fontSize: 12, color: Colors.white),
                           ),
                           subtitle: Row(
                             children: [
                               Text(
-                                'Şiddet: ${_earthQuakeList[index].mag}',
+                                'Şiddet: ${_earthQuakeList![index].mag}',
                                 style: const TextStyle(
                                     fontSize: 11, color: Colors.grey),
                               ),
@@ -85,7 +85,7 @@ class _EarthQuakeListState extends State<EarthQuakeList> {
                                 width: 20,
                               ),
                               Text(
-                                'Tarih: ${_earthQuakeList[index].date}',
+                                'Tarih: ${_earthQuakeList![index].date}',
                                 style:
                                     TextStyle(fontSize: 11, color: Colors.grey),
                               ),

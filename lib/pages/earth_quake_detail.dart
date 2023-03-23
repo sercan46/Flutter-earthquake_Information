@@ -7,7 +7,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class EarthQuakeDetail extends StatefulWidget {
-  EarthQuakeListModel _earthQuakeListModel = EarthQuakeListModel();
+  Result _earthQuakeListModel = Result();
 
   EarthQuakeDetail(this._earthQuakeListModel);
 
@@ -31,7 +31,7 @@ class _EarthQuakeDetailState extends State<EarthQuakeDetail> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text(
-          widget._earthQuakeListModel.lokasyon.toString(),
+          widget._earthQuakeListModel.title.toString(),
           style: TextStyle(fontSize: 12),
         ),
         centerTitle: true,
@@ -53,8 +53,10 @@ class _EarthQuakeDetailState extends State<EarthQuakeDetail> {
                     mapType: MapType.hybrid,
                     initialCameraPosition: CameraPosition(
                       target: LatLng(
-                          widget._earthQuakeListModel.lat!.toDouble(),
-                          widget._earthQuakeListModel.lng!.toDouble()),
+                          widget._earthQuakeListModel.geojson!.coordinates![1]
+                              .toDouble(),
+                          widget._earthQuakeListModel.geojson!.coordinates![0]
+                              .toDouble()),
                       zoom: 14.4746,
                     ),
                     onMapCreated: (GoogleMapController controller) {
@@ -66,7 +68,7 @@ class _EarthQuakeDetailState extends State<EarthQuakeDetail> {
                   height: 20,
                 ),
                 Text(
-                  'Merkez Üssü: ${widget._earthQuakeListModel.lokasyon}',
+                  'Merkez Üssü: ${widget._earthQuakeListModel.title}',
                   style: TextStyle(fontSize: 12, color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
@@ -96,12 +98,7 @@ class _EarthQuakeDetailState extends State<EarthQuakeDetail> {
                 ),
                 SizedBox(
                   height: 20,
-                ),
-                Text(
-                  'Enlem-Boylam: ${widget._earthQuakeListModel.lat} - ${widget._earthQuakeListModel.lng}',
-                  style: TextStyle(fontSize: 12, color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
+                )
               ],
             )),
           ),
@@ -122,13 +119,16 @@ class _EarthQuakeDetailState extends State<EarthQuakeDetail> {
     setState(() {
       markers.add(Marker(
         //add first marker
-        markerId: MarkerId(LatLng(widget._earthQuakeListModel.lat!.toDouble(),
-                widget._earthQuakeListModel.lng!.toDouble())
+        markerId: MarkerId(LatLng(
+                widget._earthQuakeListModel.geojson!.coordinates![1].toDouble(),
+                widget._earthQuakeListModel.geojson!.coordinates![0].toDouble())
             .toString()),
-        position: LatLng(widget._earthQuakeListModel.lat!.toDouble(),
-            widget._earthQuakeListModel.lng!.toDouble()), //position of marker
+        position: LatLng(
+            widget._earthQuakeListModel.geojson!.coordinates![1].toDouble(),
+            widget._earthQuakeListModel.geojson!.coordinates![0]
+                .toDouble()), //position of marker
         infoWindow: InfoWindow(
-          title: widget._earthQuakeListModel.lokasyon,
+          title: widget._earthQuakeListModel.title,
           snippet: widget._earthQuakeListModel.mag.toString(),
         ),
         icon: BitmapDescriptor.defaultMarker, //Icon for Marker
